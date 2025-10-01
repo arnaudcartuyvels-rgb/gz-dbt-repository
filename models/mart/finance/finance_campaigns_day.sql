@@ -31,8 +31,8 @@ select
   f.revenue,
   f.purchase_cost,
   f.margin,
-  f.shipping_fees,
-  f.log_costs,
+  f.shipping_fees as shipping_fee,
+  f.log_costs as log_cost,
   f.ship_cost
 from f
 left join c
