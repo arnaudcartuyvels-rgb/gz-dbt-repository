@@ -28,5 +28,8 @@ clean-targets:         # directories to be removed by `dbt clean`
 models:
   my_new_project:
     mart:
-      +materialized: table
+      +materialized: table    # règle par défaut pour tout le mart
+      finance:                # sous-dossier models/mart/finance/*
+        +schema: finance      # => dataset BigQuery: dbt_<ton_prénom>_finance
+
 
