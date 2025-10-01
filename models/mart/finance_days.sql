@@ -1,4 +1,5 @@
 -- models/mart/finance_days.sql
+
 with ord as (
   select orders_id, date_date, revenue, quantity, purchase_cost
   from {{ ref('int_orders_margin') }}
