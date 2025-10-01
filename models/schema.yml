@@ -100,3 +100,9 @@ models:
         description: primary key (one row per day)
         tests: [unique, not_null]
 
+  - name: finance_campaigns_month
+    description: "Monthly finance mart aggregated from finance_campaigns_day."
+    columns:
+      - name: datemonth
+        description: primary key (one row per month)
+        tests: [unique, not_null]
