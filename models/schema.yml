@@ -34,3 +34,43 @@ sources:
             tests:
               - unique
               - not_null
+
+      - name: adwords
+        identifier: raw_gz_adwords
+        description: Adwords campaigns raw data
+        columns:
+          - name: "date_date || '--' || campaign_key"
+            description: primary key of the table (date + campaign)
+            tests:
+              - unique
+              - not_null
+
+      - name: bing
+        identifier: raw_gz_bing
+        description: Bing campaigns raw data
+        columns:
+          - name: "date_date || '--' || campaign_key"
+            description: primary key of the table (date + campaign)
+            tests:
+              - unique
+              - not_null
+
+      - name: criteo
+        identifier: raw_gz_criteo
+        description: Criteo campaigns raw data
+        columns:
+          - name: "date_date || '--' || campaign_key"
+            description: primary key of the table (date + campaign)
+            tests:
+              - unique
+              - not_null
+
+      - name: facebook
+        identifier: raw_gz_facebook
+        description: Facebook campaigns raw data
+        columns:
+          - name: "date_date || '--' || campaign_key"
+            description: primary key of the table (date + campaign)
+            tests:
+              - unique
+              - not_null
