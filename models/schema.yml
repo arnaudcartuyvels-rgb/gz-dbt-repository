@@ -74,3 +74,12 @@ sources:
             tests:
               - unique
               - not_null
+models:
+  - name: int_campaigns
+    description: "Union of all ad campaign staging tables."
+    columns:
+      - name: "date_date || '--' || campaign_key || '--' || paid_source"
+        description: primary key of the table
+        tests:
+          - unique
+          - not_null
