@@ -1,42 +1,27 @@
 -- models/mart/finance_days.sql
-
-with orders as (
-  -- per-order metrics (date, revenue, quantity, purchase_cost, margin)
-  select * from {{ ref('int_orders_margin') }}
+with ord as (
+  select orders_id, date_date, revenue, quantity, purchase_cost
+  from {{ ref('int_orders_margin') }}
 ),
-ship as (
-  select
-    orders_id,
-    shipping_fee,
-    log_cost,
-    ship_cost
-  from {{ ref('stg_raw__ship') }}
+op as (
+  select orders_id, date_date, operational_margin, shipping_fee, log_cost, ship_cost
+  from {{ ref('int_orders_operational') }}
 )
 
-
 select
-  o.date_date                                                as date,
-  count(distinct o.orders_id)                                as transactions,
-  round(sum(o.revenue), 2)                                   as revenue,
-  round(safe_divide(sum(o.revenue), count(distinct o.orders_id)), 2) as average_basket,
-  round(
-    sum(
-      o.margin
-      + coalesce(s.shipping_fee, 0)
-      - coalesce(s.log_cost,    0)
-      - coalesce(s.ship_cost,   0)
-    ),
-    2
-  )                                                          as operational_margin,
-  round(sum(o.purchase_cost), 2)                             as purchase_cost,
-  round(sum(coalesce(s.shipping_fee, 0)), 2)                 as shipping_fees,
-  round(sum(coalesce(s.log_cost,      0)), 2)                as log_costs,
-  sum(o.quantity)                                            as quantity
-from orders o
-left join ship s
-  on s.orders_id = o.orders_id
-group by
-  o.date_date
-order by
-  o.date_date
+  ord.date_date                                   as date,
+  count(distinct ord.orders_id)                   as transactions,
+  ROUND (sum(ord.revenue),2)                                as revenue,
+  ROUND (safe_divide(sum(ord.revenue), count(distinct ord.orders_id)),2) as average_basket,
+  ROUND (sum(op.operational_margin),2)                      as operational_margin,
+  ROUND (sum(ord.purchase_cost),2)                          as purchase_cost,
+  ROUND (sum(op.shipping_fee),2)                            as shipping_fees,
+  ROUND (sum(op.log_cost),2)                                as log_costs,
+  ROUND (sum(ord.quantity),2)                               as quantity
+from ord
+left join op using (orders_id, date_date)
+group by ord.date_date
+order by ord.date_date
+
+
 
