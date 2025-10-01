@@ -1,12 +1,13 @@
 with orders as (
-  select * from {{ ref('int_orders_margin') }}
+  select *
+  from {{ ref('int_orders_margin') }}
 ),
 ship as (
   select
     orders_id,
     shipping_fee,
-    ship_cost,
-    log_cost
+    log_cost,      
+    ship_cost      
   from {{ ref('stg_raw__ship') }}
 )
 
@@ -16,9 +17,10 @@ select
   round(
     o.margin
     + coalesce(s.shipping_fee, 0)
-    - coalesce(s.log_cost,   0)
-    - coalesce(s.ship_cost,  0)
-  , 2) as operational_margin
+    - coalesce(s.ship_cost, 0)
+  , 2) as operational_margin,
+  coalesce(s.shipping_fee, 0) as shipping_fee,
+  coalesce(s.log_cost,   0)   as log_cost,
+  coalesce(s.ship_cost,  0)   as ship_cost
 from orders o
 left join ship s using (orders_id)
-
