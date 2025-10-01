@@ -34,3 +34,75 @@ sources:
             tests:
               - unique
               - not_null
+
+      - name: adwords
+        identifier: raw_gz_adwords
+        description: Adwords campaigns raw data
+        columns:
+          - name: "date_date || '--' || campaign_key"
+            description: primary key of the table (date + campaign)
+            tests:
+              - unique
+              - not_null
+
+      - name: bing
+        identifier: raw_gz_bing
+        description: Bing campaigns raw data
+        columns:
+          - name: "date_date || '--' || campaign_key"
+            description: primary key of the table (date + campaign)
+            tests:
+              - unique
+              - not_null
+
+      - name: criteo
+        identifier: raw_gz_criteo
+        description: Criteo campaigns raw data
+        columns:
+          - name: "date_date || '--' || campaign_key"
+            description: primary key of the table (date + campaign)
+            tests:
+              - unique
+              - not_null
+
+      - name: facebook
+        identifier: raw_gz_facebook
+        description: Facebook campaigns raw data
+        columns:
+          - name: "date_date || '--' || campaign_key"
+            description: primary key of the table (date + campaign)
+            tests:
+              - unique
+              - not_null
+models:
+  - name: int_campaigns
+    description: "Union of all ad campaign staging tables."
+    columns:
+      - name: "date_date || '--' || campaign_key || '--' || paid_source"
+        description: primary key of the table
+        tests:
+          - unique
+          - not_null
+
+  - name: int_campaigns_day
+    description: "Daily aggregation of all ad campaigns."
+    columns:
+      - name: date
+        description: primary key of the table (one row per day)
+        tests:
+          - unique
+          - not_null
+
+  - name: finance_campaigns_day
+    description: "Daily finance mart enriched with ad costs."
+    columns:
+      - name: date
+        description: primary key (one row per day)
+        tests: [unique, not_null]
+
+  - name: finance_campaigns_month
+    description: "Monthly finance mart aggregated from finance_campaigns_day."
+    columns:
+      - name: datemonth
+        description: primary key (one row per month)
+        tests: [unique, not_null]
