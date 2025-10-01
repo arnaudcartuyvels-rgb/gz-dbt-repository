@@ -83,3 +83,20 @@ models:
         tests:
           - unique
           - not_null
+
+  - name: int_campaigns_day
+    description: "Daily aggregation of all ad campaigns."
+    columns:
+      - name: date
+        description: primary key of the table (one row per day)
+        tests:
+          - unique
+          - not_null
+
+  - name: finance_campaigns_day
+    description: "Daily finance mart enriched with ad costs."
+    columns:
+      - name: date
+        description: primary key (one row per day)
+        tests: [unique, not_null]
+
